@@ -1,118 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图床上传</title>
+    <title>图床</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f7fa;
-        }
-        .container {
             text-align: center;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            width: 100%;
-            max-width: 600px;
-        }
-        h1 {
-            color: #4A90E2;
-            margin-bottom: 20px;
-            font-size: 32px;
+            margin-top: 50px;
         }
         input[type="file"] {
             padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            width: 80%;
+            margin: 20px;
         }
-        button {
-            padding: 12px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 18px;
-            width: 80%;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .message {
+        .image-link {
             margin-top: 20px;
             font-size: 18px;
-            color: #333;
-            font-weight: bold;
         }
-        .url {
-            display: block;
-            margin-top: 10px;
-            font-size: 16px;
-            color: #4CAF50;
+        .image-link a {
+            color: #1e90ff;
             text-decoration: none;
-            background-color: #f4f9f4;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-        .url:hover {
-            background-color: #e1f7e1;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>图床上传</h1>
-        <input type="file" id="fileInput" accept="image/*" />
-        <button onclick="uploadImage()">上传图片</button>
-        <p id="uploadMessage" class="message"></p>
-        <a id="imageUrl" class="url" href="#" style="display:none;" target="_blank"></a>
-    </div>
 
-    <script>
-        async function uploadImage() {
-            const fileInput = document.getElementById('fileInput');
-            const file = fileInput.files[0];
+    <h1>上传图片到图床</h1>
+    <form action="upload.php" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" required>
+        <br>
+        <input type="submit" value="上传图片">
+    </form>
 
-            if (!file) {
-                document.getElementById('uploadMessage').innerText = "请选择一个图片文件!";
-                return;
-            }
+    <div id="image-link" class="image-link"></div>
 
-            const formData = new FormData();
-            formData.append('file', file);
-
-            const response = await fetch('图床/upload.php', {
-                method: 'POST',
-                body: formData,
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                document.getElementById('uploadMessage').innerText = "上传成功！";
-                const imageUrl = result.url;
-                const imageLink = document.getElementById('imageUrl');
-                imageLink.innerText = "点击这里查看图片";
-                imageLink.href = imageUrl;
-                imageLink.style.display = "inline-block";
-            } else {
-                document.getElementById('uploadMessage').innerText = `上传失败: ${result.error}`;
-                document.getElementById('imageUrl').style.display = "none";
-            }
-        }
-    </script>
 </body>
 </html>
